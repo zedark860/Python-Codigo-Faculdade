@@ -5,58 +5,77 @@ import random
 import string
 
 def armazenar_parametros():
-    palavras = ["python", "programação", "computador", "jogo", "aplicativo", "desenvolvimento", "inteligência", "artificial"]
+    palavras = ["python", "programacao", "computador", "jogo", "aplicativo", "desenvolvimento", "inteligencia", "artificial"]
     palavra_chave = random.choice(palavras)
     return palavra_chave
 
-def verificar_letra(letra_chute, palavra_chave, letras_corretas, letras_incorretas, label_status, label_dica, label_letras_escolhidas):
+def verificar_letra(entrada, palavra_chave, letras_corretas, letras_incorretas, palavras_incorretas, label_status, label_dica, label_letras_escolhidas, label_palavras_incorretas):
     global tentativas
 
-    if not letra_chute:
-        label_status.configure(text="Digite uma letra válida.")
+    if not entrada:
+        label_status.configure(text="Digite uma letra ou uma palavra válida.")
         return
 
-    if letra_chute in letras_corretas or letra_chute in letras_incorretas:
-        label_status.configure(text=f"A letra {letra_chute} já foi escolhida.")
-        return
+    if len(entrada) == 1:  # Se for uma única letra
+        letra_chute = entrada.lower()
 
-    if tentativas == 4:
-        label_dica.configure(text=f"Dica: A palavra começa com a letra '{palavra_chave[0]}'.")
-    
-    if tentativas == 0:
-        label_dica.configure(text=f"Dica: A última letra da palavra é '{palavra_chave[-1]}'.")
+        if letra_chute in letras_corretas or letra_chute in letras_incorretas:
+            label_status.configure(text=f"A letra {letra_chute} já foi escolhida.")
+            return
 
-    tentativas -= 1
+        if tentativas == 4:
+            label_dica.configure(text=f"Dica: A palavra começa com a letra '{palavra_chave[0]}'.")
 
-    if letra_chute == palavra_chave:
-        label_status.configure(text=f"Parabéns! Você acertou a palavra-chave: {palavra_chave}")
-        if messagebox.askyesno("Jogo da Forca", "Você ganhou! Deseja jogar novamente?"):
-            reiniciar_jogo(label_letras_escolhidas, label_dica)
-        return
+        if tentativas == 0:
+            label_dica.configure(text=f"Dica: A última letra da palavra é '{palavra_chave[-1]}'.")
 
-    if letra_chute in palavra_chave:
-        letras_corretas.append(letra_chute)
-        label_status.configure(text=f"A letra {letra_chute} está na palavra-chave.")
-        if set(letras_corretas) == set(palavra_chave):
-            label_status.configure(text=f"Parabéns! Você acertou a palavra-chave: {''.join(palavra_chave)}")
+        tentativas -= 1
+
+        if letra_chute == palavra_chave:
+            label_status.configure(text=f"Parabéns! Você acertou a palavra-chave: {palavra_chave}")
             if messagebox.askyesno("Jogo da Forca", "Você ganhou! Deseja jogar novamente?"):
-                reiniciar_jogo(label_letras_escolhidas, label_dica)
+                reiniciar_jogo(label_letras_escolhidas, label_dica, label_palavras_incorretas)
             else:
-                messagebox.showinfo("Jogo da Forca", "O programa será encerrado.")
                 root.quit()
-            return
-    else:
-        letras_incorretas.append(letra_chute)
-        if tentativas > 0:
-            label_status.configure(text=f"Você errou. Letras incorretas: {' '.join(letras_incorretas)} | Tentativas restantes: {tentativas}")
+                return
+
+        if letra_chute in palavra_chave:
+            letras_corretas.append(letra_chute)
+            label_status.configure(text=f"A letra {letra_chute} está na palavra-chave.")
+            if set(letras_corretas) == set(palavra_chave):
+                label_status.configure(text=f"Parabéns! Você acertou a palavra-chave: {''.join(palavra_chave)}")
+                if messagebox.askyesno("Jogo da Forca", "Você ganhou! Deseja jogar novamente?"):
+                    reiniciar_jogo(label_letras_escolhidas, label_dica, label_palavras_incorretas)
+                else:
+                    messagebox.showinfo("Jogo da Forca", "O programa será encerrado.")
+                    root.quit()
+                return
         else:
-            label_status.configure(text=f"Você perdeu! A palavra-chave era: {''.join(palavra_chave)}")
-            if messagebox.askyesno("Jogo da Forca", "Deseja jogar novamente?"):
-                reiniciar_jogo(label_letras_escolhidas, label_dica)
+            letras_incorretas.append(letra_chute)
+            palavras_incorretas.append(letra_chute)
+            if tentativas > 0:
+                label_status.configure(text=f"Você errou. Letras incorretas: {' '.join(letras_incorretas)} | Tentativas restantes: {tentativas}")
             else:
-                messagebox.showinfo("Jogo da Forca", "O programa será encerrado.")
+                label_status.configure(text=f"Você perdeu! A palavra-chave era: {''.join(palavra_chave)}")
+                if messagebox.askyesno("Jogo da Forca", "Deseja jogar novamente?"):
+                    reiniciar_jogo(label_letras_escolhidas, label_dica, label_palavras_incorretas)
+                else:
+                    messagebox.showinfo("Jogo da Forca", "O programa será encerrado.")
+                    root.quit()
+                return
+    else:  # Se for uma palavra completa
+        palavra_chute = entrada.lower()
+        if palavra_chute == palavra_chave:
+            label_status.configure(text=f"Parabéns! Você acertou a palavra-chave: {palavra_chave}")
+            if messagebox.askyesno("Jogo da Forca", "Você ganhou! Deseja jogar novamente?"):
+                reiniciar_jogo(label_letras_escolhidas, label_dica, label_palavras_incorretas)
+            else:
                 root.quit()
-            return
+                return
+        else:
+            palavras_incorretas.append(palavra_chute)
+            label_status.configure(text=f"A palavra '{palavra_chute}' não é a palavra-chave.")
+            label_palavras_incorretas.configure(text=f"Palavras incorretas: {' '.join(palavras_incorretas)}")
 
     letras_escolhidas = f"Letras escolhidas: {' '.join(letras_corretas + letras_incorretas)}"
     label_letras_escolhidas.configure(text=letras_escolhidas)
@@ -67,21 +86,23 @@ def verificar_letra(letra_chute, palavra_chave, letras_corretas, letras_incorret
 def on_click():
     letra_chute = entry.get().lower()
     entry.delete(0, tk.END)
-    verificar_letra(letra_chute, palavra_chave, letras_corretas, letras_incorretas, label_status, label_dica, label_letras_escolhidas)
+    verificar_letra(letra_chute, palavra_chave, letras_corretas, letras_incorretas, palavras_incorretas, label_status, label_dica, label_letras_escolhidas, label_palavras_incorretas)
 
     if not letra_chute:
         button.configure(state=tk.DISABLED)
 
-def reiniciar_jogo(label_letras_escolhidas, label_dica):
-    global letras_corretas, letras_incorretas, tentativas
+def reiniciar_jogo(label_letras_escolhidas, label_dica, label_palavras_incorretas):
+    global letras_corretas, letras_incorretas, tentativas, palavras_incorretas
     letras_corretas = []
     letras_incorretas = []
-    tentativas = 6
-    label_status.configure(text="Digite uma letra:")
+    palavras_incorretas = []
+    tentativas = 5
+    label_status.configure(text="Digite uma letra ou uma palavra:")
     button.configure(state=tk.NORMAL)
     label_letras_escolhidas.configure(text="")
     label_palavra_chave.configure(text="")
     label_dica.configure(text="")
+    label_palavras_incorretas.configure(text="")
 
 def validar_entrada(event):
     if event.char not in string.ascii_letters and event.char != '\b':
@@ -97,6 +118,7 @@ if __name__ == "__main__":
     palavra_chave = armazenar_parametros()
     letras_corretas = []
     letras_incorretas = []
+    palavras_incorretas = []
     tentativas = 5
 
     root = ctk.CTk()
@@ -122,6 +144,9 @@ if __name__ == "__main__":
 
     label_dica = ctk.CTkLabel(root, text="")
     label_dica.pack(pady=10)
+
+    label_palavras_incorretas = ctk.CTkLabel(root, text="")
+    label_palavras_incorretas.pack(pady=10)
 
     button.configure(state=tk.DISABLED)
     entry.bind("<KeyRelease>", habilitar_botao)
