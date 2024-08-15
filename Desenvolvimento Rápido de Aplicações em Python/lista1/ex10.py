@@ -1,4 +1,4 @@
-def search_binary(number_list: list, target: int) -> int:
+def search_binary(number_list: list[int], target: int) -> int:
     low: int = 0
     high: int = len(number_list) - 1
     
@@ -13,7 +13,7 @@ def search_binary(number_list: list, target: int) -> int:
     
     return -1
 
-number_list: list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+number_list: list[int] = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 print(search_binary(number_list, 8)) # => 7
 print(search_binary(number_list, 10)) # => -1

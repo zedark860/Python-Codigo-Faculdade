@@ -1,4 +1,4 @@
-def insertion_sort(number_list: list) -> list:
+def insertion_sort(number_list: list[int]) -> list[int]:
     for i in range(1, len(number_list)):
         j = i
         while j > 0 and number_list[j] < number_list[j - 1]:
@@ -7,6 +7,6 @@ def insertion_sort(number_list: list) -> list:
     return number_list
 
 
-number_list: list = [5, 3, 6, 2, 10]
+number_list: list[int] = [5, 3, 6, 2, 10]
 
 print(insertion_sort(number_list))
