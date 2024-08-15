@@ -10,7 +10,7 @@ def count_search_letter(word: str, letter: str, count: int = 0) -> int:
         
     return count_search_letter(word[1:], letter, count)
 
-word = input("Digite uma palavra: ")
-letter = input("Digite uma letra para ver sua quantidade: ")
+word: str = input("Digite uma palavra: ")
+letter: str = input("Digite uma letra para ver sua quantidade: ")
 
 print(count_search_letter(word, letter))
