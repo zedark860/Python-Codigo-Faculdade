@@ -1,0 +1,3 @@
+
+class Ten:
+    pass

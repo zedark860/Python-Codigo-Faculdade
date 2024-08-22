@@ -1,0 +1,3 @@
+
+class Nine:
+    pass
