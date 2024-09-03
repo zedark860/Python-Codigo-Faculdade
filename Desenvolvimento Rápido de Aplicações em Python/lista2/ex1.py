@@ -1,5 +1,5 @@
 
-class Car:
+class Car:''''''
     def __init__(self, brand: str, model: str, year: int) -> None:
         self.brand = brand
         self.model = model
@@ -15,4 +15,4 @@ if __name__ == "__main__":
     car2: Car = Car("NISSAN", "SKYLINE GTR R34", 1998)
     
     car1.details()
-    car2.details()        
+    car2.details()
