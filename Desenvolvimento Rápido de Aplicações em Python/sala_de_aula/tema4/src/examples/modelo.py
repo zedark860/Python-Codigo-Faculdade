@@ -7,8 +7,8 @@ class Pessoa:
         self.veiculos = []
 
 class Marca:
-    def __init__(self, id, nome, sigla):
-        self.id = id
+    def __init__(self, nome, sigla):
+        self.id = None
         self.nome = nome
         self.sigla = sigla
 

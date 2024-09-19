@@ -7,13 +7,8 @@ try:
     cursor: Cursor = conexao.cursor()
     
     comando: str = """
-        CREATE TABLE PESSOA (
-            cpf INTEGER NOT NULL,
-            nome TEXT NOT NULL,
-            nascimento DATE NOT NULL,
-            oculos BOOLEAN NOT NULL,
-            PRIMARY KEY (cpf)
-        )
+        ALTER TABLE VEICULO 
+        ADD COLUMN motor REAL
     """
     
     cursor.execute(comando)

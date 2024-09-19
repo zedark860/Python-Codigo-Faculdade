@@ -7,16 +7,11 @@ try:
     cursor: Cursor = conexao.cursor()
     
     comando: str = """
-        CREATE TABLE PESSOA (
-            cpf INTEGER NOT NULL,
-            nome TEXT NOT NULL,
-            nascimento DATE NOT NULL,
-            oculos BOOLEAN NOT NULL,
-            PRIMARY KEY (cpf)
-        )
+        INSERT INTO PESSOA (cpf, nome, nascimento, oculos)
+        VALUES (?, ?, ?, ?)
     """
     
-    cursor.execute(comando)
+    cursor.execute(comando, (12345678900, "João", "2000-01-31", True))
     
     conexao.commit()
 except DatabaseError as erro:

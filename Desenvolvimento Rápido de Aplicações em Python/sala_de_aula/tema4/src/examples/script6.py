@@ -7,12 +7,15 @@ try:
     cursor: Cursor = conexao.cursor()
     
     comando: str = """
-        CREATE TABLE PESSOA (
-            cpf INTEGER NOT NULL,
-            nome TEXT NOT NULL,
-            nascimento DATE NOT NULL,
-            oculos BOOLEAN NOT NULL,
-            PRIMARY KEY (cpf)
+        CREATE TABLE VEICULO (
+            placa CHARACTER(7) NOT NULL,
+            ano INTEGER NOT NULL,
+            cor TEXT NOT NULL,
+            proprietario INTEGER NOT NULL,
+            marca INTEGER NOT NULL,
+            PRIMARY KEY (placa),
+            FOREIGN KEY (proprietario) REFERENCES PESSOA(cpf),
+            FOREIGN KEY (marca) REFERENCES MARCA(id)
         )
     """
     
