@@ -13,21 +13,21 @@ try:
         UPDATE PESSOA
         SET oculos = 1
     '''
-    conexao.execute(comando1)
+    cursor.execute(comando1)
 
     comando2: str = '''
         UPDATE PESSOA
         SET oculos = ?
         WHERE cpf = ?
     '''
-    conexao.execute(comando2, (False, 30000000099))
+    cursor.execute(comando2, (False, 30000000099))
     
     comando3: str = '''
         UPDATE PESSOA
         SET oculos = :usa_oculos
         WHERE cpf = :cpf
     '''
-    conexao.execute(comando3, {"usa_oculos": False, "cpf": 20000000099})
+    cursor.execute(comando3, {"usa_oculos": False, "cpf": 20000000099})
 
     conexao.commit()
 except DatabaseError as erro:

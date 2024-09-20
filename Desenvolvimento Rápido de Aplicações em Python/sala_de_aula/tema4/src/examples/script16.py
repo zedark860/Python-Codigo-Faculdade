@@ -4,19 +4,19 @@ from sqlite3 import Connection, Cursor, DatabaseError
 
 try:
     conexao: Connection = sqlite3.connect(os.getcwd() + "/database/meu_banco.db")
-    
-    # Habilita as chaves estrangeiras, pois o sqlite3 não suporta isso por padrão
-    conexao.execute("PRAGMA foreign_keys = on")
     cursor: Cursor = conexao.cursor()
 
     comando: str = '''
-        DELETE FROM PESSOA
-        WHERE cpf = 12345678900
+        SELECT nome, oculos FROM PESSOA 
     '''
-
     cursor.execute(comando)
+    
+    registros = cursor.fetchall()
+    print("Tipo retornado pelo fetchall:", type(registros))
 
-    conexao.commit()
+    for registro in registros:
+        print("Tipo:", type(registro), "- Conteúdo:", registro)
+
 except DatabaseError as erro:
     print("Erro de banco de dados", erro)
 finally:
